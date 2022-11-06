@@ -1,0 +1,145 @@
+<form nz-form nzLayout="horizontal" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <!--类别-->
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>UI类型</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+            <nz-radio-group nzSize="small" nzButtonStyle="solid" formControlName="uiType">
+                <label nz-radio-button *ngFor="let option of uiType" [nzValue]="option.value">
+                    <span>{{option.label}}</span>
+                </label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+    <!--上级类目-->
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>上级类目</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+            <nz-tree-select
+                    formControlName="parent"
+                    style="width: 250px"
+                    nzPlaceHolder="请选择上级类目"
+                    [nzDropdownMatchSelectWidth]="true"
+                    [nzDropdownStyle]="{ 'max-height': '300px' }"
+                    [nzNodes]="permissionNodes"
+                    [nzAsyncData]="true"
+                    (nzExpandChange)="onExpandChange($event)"
+            ></nz-tree-select>
+        </nz-form-control>
+    </nz-form-item>
+    <!--标题-->
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>标题</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="titleErrorTpl">
+            <input nz-input formControlName="title" placeholder="async validate try to write JasonWood"/>
+            <ng-template #titleErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Please input your title!</ng-container>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+    <!--权限标识符-->
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>权限标识符</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="permitErrorTpl">
+            <input nz-input formControlName="permit" placeholder="async validate try to write JasonWood"/>
+            <ng-template #permitErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Please input your permit!</ng-container>
+                <ng-container *ngIf="control.hasError('duplicated')">The permit is redundant!</ng-container>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+    <!--权限描述-->
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>权限描述</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="Please write something here!">
+            <textarea formControlName="description" nz-input rows="2" placeholder="write any thing"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+    <!--排序-->
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>排序</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating...">
+            <nz-input-number formControlName="sort" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>
+        </nz-form-control>
+    </nz-form-item>
+    <!--开启缓存-->
+    <nz-form-item *ngIf="uiTypeValue==='PAGE'">
+        <nz-form-label [nzSpan]="7" nzRequired>开启缓存</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+            <nz-radio-group nzButtonStyle="solid" formControlName="cached">
+                <label nz-radio-button [nzValue]="true"><span>是</span></label>
+                <label nz-radio-button [nzValue]="false"><span>否</span></label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+    <!--显示到菜单-->
+    <nz-form-item *ngIf="uiTypeValue!=='ELEMENT'">
+        <nz-form-label [nzSpan]="7" nzRequired>显示到菜单</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+            <nz-radio-group nzButtonStyle="solid" formControlName="shownInMenu">
+                <label nz-radio-button [nzValue]="true"><span>是</span></label>
+                <label nz-radio-button [nzValue]="false"><span>否</span></label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+    <!--是否有子节点/是否可展开-->
+    <nz-form-item *ngIf="uiTypeValue==='MODULE'">
+        <nz-form-label [nzSpan]="7" nzRequired>是否可展开</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+            <nz-radio-group nzButtonStyle="solid" formControlName="expandable">
+                <label nz-radio-button [nzValue]="true"><span>是</span></label>
+                <label nz-radio-button [nzValue]="false"><span>否</span></label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+    <!--隐藏面包屑导航-->
+    <nz-form-item *ngIf="uiTypeValue!=='ELEMENT'">
+        <nz-form-label [nzSpan]="7" nzRequired>隐藏面包屑导航</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+            <nz-radio-group nzButtonStyle="solid" formControlName="hiddenInBreadcrumb">
+                <label nz-radio-button [nzValue]="true"><span>是</span></label>
+                <label nz-radio-button [nzValue]="false"><span>否</span></label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+    <!--请求地址-->
+    <nz-form-item *ngIf="uiTypeValue!=='MODULE'">
+        <nz-form-label [nzSpan]="7" nzRequired>请求地址</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="pathErrorTpl">
+            <input nz-input formControlName="path" placeholder="async validate try to write JasonWood"/>
+            <ng-template #pathErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Please input your path !</ng-container>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+    <!--外链-->
+    <nz-form-item *ngIf="uiTypeValue!=='MODULE'">
+        <nz-form-label [nzSpan]="7" nzRequired>外链</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+            <nz-radio-group nzButtonStyle="solid" formControlName="externalLink">
+                <label nz-radio-button [nzValue]="true"><span>是</span></label>
+                <label nz-radio-button [nzValue]="false"><span>否</span></label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+    <!--打开方式-->
+    <nz-form-item *ngIf="uiTypeValue!=='MODULE'">
+        <nz-form-label [nzSpan]="7" nzRequired>打开方式</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="targetErrorTpl">
+            <nz-select formControlName="target" nzPlaceHolder="">
+                <nz-option *ngFor="let option of targetAttribute" [nzLabel]="option.label"
+                           [nzValue]="option.value"></nz-option>
+            </nz-select>
+            <ng-template #targetErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Please select your target!</ng-container>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+
+
+    <nz-form-item>
+        <nz-form-control [nzOffset]="7" [nzSpan]="12">
+            <button nz-button (click)="cancelForm($event)">取消</button>
+            <button nz-button nzType="primary" [disabled]="!validateForm.valid">提交</button>
+        </nz-form-control>
+    </nz-form-item>
+</form>

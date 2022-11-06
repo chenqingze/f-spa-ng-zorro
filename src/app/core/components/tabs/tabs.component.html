@@ -1,0 +1,10 @@
+<nz-tabset [nzLinkRouter]="true"
+           nzType="editable-card"
+           [nzHideAdd]="true"
+           (nzClose)="closeTab($event)">
+    <ng-container *ngFor="let tab of tabs">
+        <nz-tab [nzClosable]="tabs.length>1">
+            <a *nzTabLink nz-tab-link [routerLink]="[tab.path]">{{tab.title}}</a>
+        </nz-tab>
+    </ng-container>
+</nz-tabset>

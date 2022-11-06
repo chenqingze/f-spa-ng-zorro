@@ -1,0 +1,54 @@
+<div class="send-request">
+    <button
+            nz-button
+            nzType="primary"
+            [nzLoading]="loading"
+            (click)="sendRequest()"
+    >
+        Send Request
+    </button>
+    <button
+            nz-button
+            nzType="primary"
+            [nzLoading]="loading"
+            (click)="add()"
+    >
+        新增
+    </button>
+</div>
+<nz-table
+    #rowSelectionTable
+    nzShowPagination
+    nzShowSizeChanger
+    [nzData]="listOfData"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+>
+    <thead>
+    <tr>
+        <th>标题</th>
+        <th>排序</th>
+        <th>图标</th>
+        <th>权限标识符</th>
+        <th>菜单可见</th>
+        <th>禁用</th>
+        <th>路由/链接</th>
+        <th>外链</th>
+        <th>创建日期</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of rowSelectionTable.data">
+        <td>{{ data.uiConfig.title }}</td>
+        <td>{{ data.uiConfig.sort }}</td>
+        <td>{{ data.uiConfig.icon }}</td>
+        <td>{{ data.permit }}</td>
+        <td>{{ data.uiConfig.shownInMenu }}</td>
+        <td>{{ data.disabled }}</td>
+        <td>{{ data.uiConfig.path }}</td>
+        <td>{{ data.uiConfig.externalLink }}</td>
+        <td>{{ data.createdAt }}</td>
+        <td><a (click)="edit(data.id!)" class="ant-typography-edit">编辑</a></td>
+    </tr>
+    </tbody>
+</nz-table>

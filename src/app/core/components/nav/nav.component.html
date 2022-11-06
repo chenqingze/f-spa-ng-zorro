@@ -1,0 +1,37 @@
+<ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+    <li nz-menu-item
+        nzMatchRouter
+        nzSelected>
+        <span nz-icon nzType="dashboard"></span>
+        <span><a routerLink="/dashboard">仪表盘</a></span>
+    </li>
+    <li nz-submenu nzOpen i18n nzTitle="系统管理" nzIcon="setting">
+        <ul>
+            <li nz-menu-item nzMatchRouter>
+                <a routerLink="/system/tenant">单位管理</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+                <a routerLink="/system/dept">部门管理</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+                <a routerLink="/system/position">岗位管理</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+                <a routerLink="/system/user">用户管理</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+                <a routerLink="/system/role">角色管理</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+                <a routerLink="/system/permission">权限管理</a>
+            </li>
+        </ul>
+    </li>
+    <li nz-submenu nzOpen nzTitle="Form" nzIcon="form">
+        <ul>
+            <li nz-menu-item nzMatchRouter>
+                <a>Basic Form</a>
+            </li>
+        </ul>
+    </li>
+</ul>
